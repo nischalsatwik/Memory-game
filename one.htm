@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>HTML, CSS and JavaScript demo</title>
+        <style>
+            .main-body{
+            display: flex;
+            margin-top: 30px;
+            }
+            .red,.blue,.green,.yellow{
+                width:200px;
+                height:200px;
+                margin-left: 30px;
+                cursor:pointer;
+            }
+            .red{
+                background-color: red;
+            }
+            .blue{
+                background-color:blue;
+            }
+            .green{
+                background-color: green;
+            }
+            .yellow{
+                background-color: yellow;
+            }
+            .main-body-buttons{
+              margin-top: 30px;
+              cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="main">
+            <div class="main-body">
+                <div class="red" onclick="coloor(red,'red')"></div>
+                <div class="blue" onclick="coloor(blue,'blue')"></div>
+            </div>
+            <div class="main-body">
+                <div class="green" onclick="coloor(green,'green')"></div>
+                <div class="yellow" onclick="coloor(yellow,'yellow')"></div>
+            </div>
+            <div class="main-body-buttons">
+              <button onclick={game()}>Start</button>
+              <button onclick={window.location.reload()}>Restart</button>
+              <p id="message"></p>
+            </div>
+        </div>
+    </body>
+    <script>
+        let vis=false;
+        const blue=document.querySelector(".blue");
+        const red=document.querySelector(".red");
+        const green=document.querySelector(".green");
+        const yellow=document.querySelector(".yellow");
+        const message=document.getElementById("message");
+        let count=1;
+        let arr3=[];
+        let arr2=[];
+        let c=0;
+        const colors=[red,blue,green,yellow]
+        function game() 
+        {
+            divs = document.querySelectorAll(".main-body div");
+            arr2 = [];
+            arr3=[];
+            console.log(arr2,"insidegame")
+            glowColors(count, 0);
+        }
+ 
+        function glowColors(totalCount, currentIndex) 
+        {
+            if (currentIndex < totalCount)
+            {
+                const randomIndex = Math.floor(Math.random() * 4);
+                if (randomIndex === 0) 
+                {
+                    glowAndReset(red, "red");
+                    arr2.push("red");
+                } 
+                else if (randomIndex === 1) 
+                {
+                    glowAndReset(blue, "blue");
+                    arr2.push("blue");
+                } 
+                else if (randomIndex === 2)
+                {
+                    glowAndReset(green, "green");
+                    arr2.push("green");
+                } 
+                else 
+                {
+                    glowAndReset(yellow, "yellow");
+                    arr2.push("yellow");
+                }
+                setTimeout(
+                    () => 
+                    {
+                        glowColors(totalCount, currentIndex + 1);
+                    }, 1500);
+            }    
+            else 
+            {
+                console.log(arr2,"noted indside glow colors");
+                vis=true;
+            }
+        }
+ 
+        function glowAndReset(element, color)
+        {
+            element.style.backgroundColor = "black";
+            setTimeout(() => 
+            {
+                element.style.backgroundColor = color;
+            }, 1000);
+        }
+
+        function coloor(element,color)
+        {   
+            if(vis)
+            {
+                element.style.backgroundColor = "black";
+            setTimeout(() => {
+                element.style.backgroundColor = color;
+            }, 200);
+                arr3.push(color);
+                console.log("arr3=",arr3);
+                if(arr2[c]!==arr3[c])
+                {
+                    alert("game over you lost it")
+                    window.location.reload();
+                    return
+                }
+                else{
+                c=c+1;
+                if(c===count)
+                    {
+                        count=count+1;
+                        vis=false;
+                        alert(`level ${count}`)
+                        message.innerHTML=`Level ${count}`;
+                        c=0;
+                        setTimeout(()=>game(),2000);
+                    }
+                }
+            }
+        }
+    </script>
+</html>
